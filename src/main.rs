@@ -17,7 +17,7 @@ struct FakeNews {
 }
 
 fn get_fake_news() -> Vec<FakeNews> {
-    let file = File::open("fake_news.json").expect("Failed to open JSON file");
+    let file = File::open("news_content.json").expect("Failed to open JSON file");
     let reader = BufReader::new(file);
     from_reader(reader).expect("Failed to load JSON")
 }
