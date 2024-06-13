@@ -28,11 +28,14 @@ async fn fake_news() -> impl Responder {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    let port = env::var("PORT").unwrap_or_else(|_| "8080".to_string());
+    let port = port.parse::<u16>().expect("PORT must be a number");
+
     HttpServer::new(|| {
         App::new()
             .service(fake_news)
     })
-    .bind("0.0.0.0:8080")?
+    .bind(("0.0.0.0", port))?
     .run()
     .await
 }
