@@ -1,6 +1,5 @@
-use actix_web::{get, App, HttpServer, Responder};
-use serde::Serialize;
-use serde::Deserialize;
+use actix_web::{get, App, HttpServer, Responder, HttpResponse};
+use serde::{Serialize, Deserialize};
 use serde_json::from_reader;
 use std::fs::File;
 use std::io::BufReader;
@@ -16,16 +15,19 @@ struct FakeNews {
     tags: Vec<String>,
 }
 
-fn get_fake_news() -> Vec<FakeNews> {
-    let file = File::open("news_content.json").expect("Failed to open JSON file");
+fn get_fake_news() -> Result<Vec<FakeNews>, String> {
+    let file = File::open("news_content.json").map_err(|e| format!("Failed to open JSON file: {}", e))?;
     let reader = BufReader::new(file);
-    from_reader(reader).expect("Failed to load JSON")
+    let news: Vec<FakeNews> = from_reader(reader).map_err(|e| format!("Failed to load JSON: {}", e))?;
+    Ok(news)
 }
 
 #[get("/fake-news")]
 async fn fake_news() -> impl Responder {
-    let news = get_fake_news();
-    actix_web::web::Json(news)
+    match get_fake_news() {
+        Ok(news) => HttpResponse::Ok().json(news),
+        Err(err) => HttpResponse::InternalServerError().body(err),
+    }
 }
 
 #[actix_web::main]
