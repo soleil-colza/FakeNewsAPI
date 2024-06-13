@@ -3,6 +3,7 @@ use serde::Serialize;
 
 #[derive(Serialize)]
 struct FakeNews {
+    id: String,
     title: String,
     date_published: String,
     authors: Vec<String>,
