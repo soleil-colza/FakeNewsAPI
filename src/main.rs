@@ -1,7 +1,10 @@
 use actix_web::{get, App, HttpServer, Responder};
-use serde::Serialize;
+use serde::Deserialize;
+use serde_json::from_reader;
+use std::fs::File;
+use std::io::BufReader;
 
-#[derive(Serialize)]
+#[derive(Serialize, Deserialize)]
 struct FakeNews {
     id: i32,
     title: String,
@@ -12,24 +15,9 @@ struct FakeNews {
 }
 
 fn get_fake_news() -> Vec<FakeNews> {
-    vec![
-        FakeNews {
-            id: 1,
-            title: "title1".to_string(),
-            date_published: "2024-06-13T12:00:00Z".to_string(),
-            authors: vec!["author1".to_string(), "author2".to_string()],
-            content: "this is the content1".to_string(),
-            tags: vec!["tag1".to_string(), "tag2".to_string()],
-        },
-        FakeNews {
-            id: 2,
-            title: "title2".to_string(),
-            date_published: "2024-06-14T12:00:00Z".to_string(),
-            authors: vec!["author".to_string()],
-            content: "this is the content2".to_string(),
-            tags: vec!["tag3".to_string(), "tag4".to_string()],
-        },
-    ]
+    let file = File::open("fake_news.json").expect("Failed to open JSON file");
+    let reader = BufReader::new(file);
+    from_reader(reader).expect("Failed to load JSON")
 }
 
 #[get("/fake-news")]
