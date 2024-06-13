@@ -1,8 +1,10 @@
 use actix_web::{get, App, HttpServer, Responder};
+use serde::Serialize;
 use serde::Deserialize;
 use serde_json::from_reader;
 use std::fs::File;
 use std::io::BufReader;
+use std::env;
 
 #[derive(Serialize, Deserialize)]
 struct FakeNews {
