@@ -3,7 +3,7 @@ use serde::Serialize;
 
 #[derive(Serialize)]
 struct FakeNews {
-    id: String,
+    id: i32,
     title: String,
     date_published: String,
     authors: Vec<String>,
@@ -14,6 +14,7 @@ struct FakeNews {
 fn get_fake_news() -> Vec<FakeNews> {
     vec![
         FakeNews {
+            id: 1,
             title: "title1".to_string(),
             date_published: "2024-06-13T12:00:00Z".to_string(),
             authors: vec!["author1".to_string(), "author2".to_string()],
@@ -21,6 +22,7 @@ fn get_fake_news() -> Vec<FakeNews> {
             tags: vec!["tag1".to_string(), "tag2".to_string()],
         },
         FakeNews {
+            id: 2,
             title: "title2".to_string(),
             date_published: "2024-06-14T12:00:00Z".to_string(),
             authors: vec!["author".to_string()],
