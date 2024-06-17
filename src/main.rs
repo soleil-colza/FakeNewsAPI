@@ -13,6 +13,7 @@ struct FakeNews {
     authors: Vec<String>,
     content: String,
     tags: Vec<String>,
+    cover_image_url: String
 }
 
 fn get_fake_news() -> Result<Vec<FakeNews>, String> {
